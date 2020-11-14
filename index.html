@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Perceptual Circle Scaling</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+  body {
+    margin:0;
+    padding:0;
+    font-family:sans-serif;
+  }
+  h1 {
+    position:absolute;
+    left: 50px;
+    top: 10px;
+    padding: 8px 2%;
+    margin: 0;
+    background: rgba(255,121,0,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    color: whitesmoke;
+    font-size: 1.5em;
+    z-index: 800;
+  }
+  #map {
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:960px;
+    height: 540px
+  }
+  #text {
+    position: absolute;
+    top: 560px;
+    left: 15px;
+    padding: 8px 2%;
+    margin: 0;
+    background: rgba(255,169,105,0.82);
+    box-shadow: 0 0 15 px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    color: white;
+    width: 870px;
+    font-family: 'Raleway', sans-serif;
+  }
+</style>
+
+</head>
+<body>
+  <div id='text'>
+    <!--<h1>United States Population Estimates, 2019</h1>-->
+    <h2><i>Proportional Symbol Mapping with Leaflet</h2></i> 
+    <p> This interactive, proportional symbol map indicates the estimated population value for all 50 states in 2019. The differing sizes of the circles indicate changes in the population size. This map illustrates how each state has a different population, but with different population sizes, legislative powers have to manage resources effectively to service all.
+<br><br>
+    The <b>smaller</b> the circle, the <b>lower</b> the population value.<br>
+    The <b>larger</b> the circle, the <b>higher</b> the population.
+<br><br>
+    This map presents the population variances within the United States and how each state differs in population. It is important to understand population trends, especially trends in population sizes, to know which states have the highest population for state and federal management and allocation for funding, resources, and representation. As this current year, 2020, presents its challenges between the COVID-19 pandemic and an election year, evaluating the population estimates aids in several measures. The application of understanding population trends can aid efforts in determining health care resources, voter registration applicants, voting districts, state funding, education funding, and other state- and federally-based measures.
+  </div>
+  <div id='map'></div>
+  <h1>United States Population Estiamtes, 2019</h1>
+
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+
+  <script>
+    console.log("hello world!");
+    var map = L.map('map', {
+      center: [39.5, -95.3],
+      zoom: 4
+    });
+    var Stamen_TonerLite = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      ext: 'png'
+      }).addTo(map);
+      states = L.geoJson.ajax("assets/data.geojson",{
+      attribution: 'Data: US Census Bureau, Map: Jessica Mitchell',
+      pointToLayer: function (feature, x){
+        return L.circleMarker(x, {
+          color: '#ff7900',
+          opacity: 1,
+          weight: 2,
+          fillColor: '#ff7900',
+          fillOpacity: .6,
+          radius: calcRadius(feature.properties.estimate)
+        }).on({
+          mouseover: function(e){
+            this.setStyle({color: 'blue', fillColor: 'blue'});
+            this.bindPopup("State: " + feature.properties.name + "<br>"+ "Population: " + feature.properties.estimate);
+            this.openPopup();
+            //marker.bindPopup(L.popup().setContent(feature.properties.estimate));
+            //marker.openPopup();
+          },
+          mouseout: function(e){
+            this.setStyle({color:'#ff7900', fillColor:'#ff7900'});
+            this.closePopup();
+            //marker.closePopup();
+          },
+          //marker.bindPopup("Population: " + feature.properties.estimate);
+          //marker.on('mouseover', function (e) {
+            //this.openPopup();
+          //});
+          //marker.on('mouseout', function (e) {
+            //this.closePopup();
+          //})
+        })},});
+      var minValue = 578759;
+      var minRadius = 8;
+      function calcRadius(val) {
+        return 1.00 * Math.pow(val/minValue,.5) * minRadius;
+        }
+      //function onEachFeature(feature, layer) {
+        //layer.bindPopup("State: " + feature.properties.name + "<br>" + "Population: " + feature.properties.estimate);
+      //}
+      //pointToLayer: function (feature, layer) {
+      //layer.bindPopup(feature.properties.estimate);
+      //},
+      //var marker = new L.Marker (x, ).addTo(map)
+        //.bindPopup("Content");
+      //marker.bindPopup("Properties" + features.properties.estimate);
+      //marker.on('mouseover', function (e){
+        //this.openPopup();
+      //});
+      //marker.on('mouseout', function (e){
+        //this.closePopup();
+      //});
+      states.addTo(map);
+      L.control.scale({position: 'bottomleft'}).addTo(map);
+      //var legend = L.control({position: 'topright'});
+      //legend.onAdd = function () {
+      //  var div = L.DomUtil.create('div', 'legend');
+      //  div.innerHTML += '<b>Population</b><br />';
+        //div.innerHTML += <
+      //}
+  </script>
+
+</body>
+</html>
