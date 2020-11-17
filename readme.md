@@ -1,6 +1,6 @@
 # Proportional Symbol Mapping with Leaflet
 ### Perceptual Circle Scaling
-#### [View map here](mitchelljh.github.io/US_Population)
+#### [View map here](https://www.mitchelljh.github.io/US_Population)
 
 This interactive, proportional symbol map indicates the estimated population value for all 50 states in 2019. The differing sizes of the circles indicate changes in the population size. This map illustrates how each state has a different population, but with different population sizes, legislative powers have to manage resources effectively to service all.
 
